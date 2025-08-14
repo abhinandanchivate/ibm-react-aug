@@ -1,7 +1,18 @@
 import { setAlert } from "../../core/redux/coreActions";
+import { CLEAR_PROFILE } from "../../profile/redux/types";
 import API from "../../utils/api";
 import { loadUserData, registerUser } from "../services/auth.service";
-import { AUTH_ERROR, REGISTER_SUCCESS, USER_LOADED } from "./types";
+import { AUTH_ERROR, LOGOUT, REGISTER_SUCCESS, USER_LOADED } from "./types";
+
+export const logout = () => async (dispatch) => {
+  localStorage.removeItem("token");
+  dispatch({
+    type: LOGOUT,
+  });
+  dispatch({
+    type: CLEAR_PROFILE,
+  });
+};
 export const userLoadAction = () => async (dispatch) => {
   try {
     const response = await loadUserData();

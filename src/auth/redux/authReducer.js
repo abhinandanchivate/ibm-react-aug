@@ -1,6 +1,7 @@
 import {
   AUTH_ERROR,
   LOGIN_SUCCESS,
+  LOGOUT,
   REGISTER_SUCCESS,
   USER_LOADED,
 } from "./types";
@@ -9,6 +10,7 @@ const initialState = {
   user: null,
   loading: false,
   errors: null,
+  isAuthenticated: null,
   token: localStorage.getItem("token"),
 };
 
@@ -34,6 +36,14 @@ export default (state = initialState, action) => {
         isAuthenticated: false,
         loading: false,
         user: null,
+      };
+    case LOGOUT:
+      return {
+        user: null,
+        isAuthenticated: false,
+        loading: false,
+        token: null,
+        error: null,
       };
 
     default:

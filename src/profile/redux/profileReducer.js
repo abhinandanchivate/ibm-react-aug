@@ -1,6 +1,7 @@
 import {
   ADD_EDUCATION,
   ADD_EXPERIENCE,
+  CLEAR_PROFILE,
   CREATE_PROFILE,
   EDUCATION_ERROR,
   EXPERIENCE_ERROR,
@@ -23,7 +24,7 @@ export default (state = initialState, { type, payload }) => {
     case GET_PROFILE:
     case ADD_EDUCATION:
     case ADD_EXPERIENCE:
-      return { ...state, currentProfile: payload,loading:false };
+      return { ...state, currentProfile: payload, loading: false };
     case PROFILE_ERROR:
     case EDUCATION_ERROR:
     case EXPERIENCE_ERROR:
@@ -34,8 +35,10 @@ export default (state = initialState, { type, payload }) => {
         currentProfile: null,
         loading: false,
       };
-
-    
+    case CLEAR_PROFILE:
+      return {
+        ...initialState,
+      };
 
     default:
       return state;
