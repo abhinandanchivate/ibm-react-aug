@@ -3,10 +3,35 @@ import {
   addEducation,
   addExperience,
   createOrUpdateProfile,
+  deleteExpById,
   getCurrentUserProfile,
 } from "../services/profile.service";
-import { ADD_EDUCATION, ADD_EXPERIENCE, EDUCATION_ERROR, EXPERIENCE_ERROR, GET_PROFILE, PROFILE_ERROR } from "./types";
+import {
+  ADD_EDUCATION,
+  ADD_EXPERIENCE,
+  EDUCATION_ERROR,
+  EXPERIENCE_ERROR,
+  GET_PROFILE,
+  PROFILE_ERROR,
+} from "./types";
 
+export const deleteExpByIdAction = (id) => async (dispatch) => {
+  try {
+    const response = await deleteExpById(id);
+    console.log("inside the profile action");
+    dispatch({
+      type: GET_PROFILE,
+      payload: response,
+    });
+    console.log("after dispatch");
+  } catch (error) {
+    console.log("action profile ", JSON.stringify(error.response));
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: error,
+    });
+  }
+};
 export const getCurrentProfileAction = () => async (dispatch) => {
   try {
     const response = await getCurrentUserProfile();
@@ -52,52 +77,46 @@ export const createProfile =
     }
   };
 
-  export const addEduationAction=(formData,edit=false)=>async(dispatch)=>{
-    try{
-      const data=await addEducation(formData);
+export const addEduationAction =
+  (formData, edit = false) =>
+  async (dispatch) => {
+    try {
+      const data = await addEducation(formData);
       console.log("Education Added");
       dispatch({
         type: ADD_EDUCATION,
         payload: data,
-      })
-       dispatch(
+      });
+      dispatch(
         setAlert(edit ? "Education Edited" : "Education Added", "success")
       );
-    }
-    catch(err){
+    } catch (err) {
       if (err.errors) {
         err.errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
       }
       dispatch({
         type: EDUCATION_ERROR,
-         payload: { msg: err.statusText, status: err.status },
-
-      })
-
+        payload: { msg: err.statusText, status: err.status },
+      });
     }
+  };
+
+export const addExperienceAction = (formData) => async (dispatch) => {
+  try {
+    const data = await addExperience(formData);
+    console.log("Experience Added");
+    dispatch({
+      type: ADD_EXPERIENCE,
+      payload: data,
+    });
+    dispatch(setAlert("Education Added", "success"));
+  } catch (err) {
+    if (err.errors) {
+      err.errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+    }
+    dispatch({
+      type: EXPERIENCE_ERROR,
+      payload: { msg: err.statusText, status: err.status },
+    });
   }
-
-   export const addExperienceAction=(formData)=>async(dispatch)=>{
-    try{
-      const data=await addExperience(formData);
-      console.log("Experience Added");
-      dispatch({
-        type: ADD_EXPERIENCE,
-        payload: data,
-      })
-       dispatch(
-        setAlert( "Education Added", "success")
-      );
-    }
-    catch(err){
-      if (err.errors) {
-        err.errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
-      }
-      dispatch({
-        type: EXPERIENCE_ERROR,
-         payload: { msg: err.statusText, status: err.status },
-
-      })
-
-    }
-  }
+};

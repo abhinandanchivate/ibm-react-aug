@@ -1,7 +1,7 @@
 import React from "react";
 import ExpRow from "./ExpRow";
 
-const ExperienceDetails = ({exps}) => {
+const ExperienceDetails = ({ exps, deleteExperience }) => {
   return (
     <>
       <h2 class="my-2">Experience Credentials</h2>
@@ -15,7 +15,9 @@ const ExperienceDetails = ({exps}) => {
           </tr>
         </thead>
         <tbody>
-            {exps?.map((exp,index)=>(<ExpRow id={index} row={exp}/>))}
+          {exps?.map((exp, index) => (
+            <ExpRow key={index} row={exp} deleteExperience={deleteExperience} />
+          ))}
         </tbody>
       </table>
     </>
